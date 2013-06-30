@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galaxy map</title>
+    <meta http-equiv=Content-Type content="text/html;charset=UTF-8">
+    <script src="js/libs/three.min.js"></script>
+    <script src="js/libs/stats.min.js"></script>
+    <script src="js/libs/jquery.min.js"></script> 
+    <script src="js/libs/detector.js"></script> 
+
+	<script src="js/libs/kdtree.js"></script>
+
+	<script src="js/gen_names.js"></script>
+	<script src="js/events.js"></script>
+	<script src="js/map.js"></script>
+	<script src="js/stars.js"></script>
+	<script src="js/create_label.js"></script>
+	<script src="js/random.js"></script>
+    <script>
+
+    var delta = 1; 
+    var clock = new THREE.Clock();
+	var showStarNames = true; //Флаг - показывать/не показывать названия звезд
+	var points=[]; //Набор точек для Kd-tree
+	var oldX = 0, oldY = 0; //Переменные хранения предыдущих значений кординат указателя
+    var isMove = false; //Двигаем ли камеру
+    var tree; //Kd-tree
+
+   $(document).ready(function(){
+   		//Создаем рендер
+   		if(Detector.webgl)
+        	renderer = new THREE.WebGLRenderer();
+        else
+        {
+        	alert("Увы, ваш браузер не поддерживает WebGL.")
+        	return;
+        }
+        renderer.setClearColor(0x000000);
+        renderer.setSize( window.innerWidth - 15, window.innerHeight - 15 );
+    	renderer.sortObjects = false;
+    	renderer.autoClear = false;
+        document.body.appendChild( renderer.domElement );
+        //Создаем сцены
+        scene = new THREE.Scene(); //Звезды и деления квадрантов
+        sceneNames = new THREE.Scene(); //Название звезд
+        sceneSectors = new THREE.Scene(); //Деления секторов
+        //Камера
+        camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 100000000 );
+        camera.position.set( 0, 0, 1000 );
+        camera.scale.x = camera.scale.y = 1.52;
+        //FPS-метр
+	    stats = new Stats();
+	    stats.domElement.style.position = 'absolute';
+	    stats.domElement.style.top = '0px';
+	    document.body.appendChild( stats.domElement );
+
+		initEvents(); //events.js
+		initStars(); //stars.js
+		initMap(); //map.js
+
+        draw();
+
+    });
+
+    function draw() 
+    {
+    	delta = clock.getDelta();
+
+        requestAnimationFrame( draw );
+
+        stats.update();
+     
+        if(showStarNames)
+        {
+	       	renderer.clear( false, true, false );
+			renderer.render( sceneNames, camera ); 	
+        }
+
+		renderer.clear( false, true, false );
+		renderer.render( sceneSectors, camera );
+
+		renderer.clear( false, true, false );
+		renderer.render( scene, camera );
+
+    }
+    </script>
+</head>
+<body style="background-color:#000;margin:0">>
+
+<span id="quad" style="position:absolute;left:100px;top:10px;color:white;font-family:Arial;font-size:19px">#x-y > Quadrant</span>
+<span id="sector" style="position:absolute;left:100px;top:30px;color:#555;font-family:Arial;font-size:19px">(sx-sy) > Sector</span>
+
+</body>
+</html>
