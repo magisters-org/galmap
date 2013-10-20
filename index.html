@@ -6,7 +6,7 @@
     <script src="js/libs/three.min.js"></script>
     <script src="js/libs/stats.min.js"></script>
     <script src="js/libs/jquery.min.js"></script> 
-    <script rc="js/libs/Detector.js"></script> 
+    <script src="js/libs/detector.js"></script> 
 
 	<script src="js/libs/kdtree.js"></script>
 
@@ -44,16 +44,20 @@
         scene = new THREE.Scene(); //Звезды и деления квадрантов
         sceneNames = new THREE.Scene(); //Название звезд
         sceneSectors = new THREE.Scene(); //Деления секторов
+        sceneText = new THREE.Scene(); //Деления секторов
         //Камера
         camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 100000000 );
         camera.position.set( 0, 0, 1000 );
         camera.scale.x = camera.scale.y = 1.52;
-        //FPS-метр
-	    stats = new Stats();
-	    stats.domElement.style.position = 'absolute';
-	    stats.domElement.style.top = '0px';
-	    document.body.appendChild( stats.domElement );
 
+        cameraText = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 100000000 );
+        cameraText.position.set( 0, 0, 1000 );
+        cameraText.scale.x = cameraText.scale.y = 1.52;
+
+        
+
+        //scene.add(createLabel("xxxx", 0, 0, 0, 26, "white"));
+        //addText("XXXXX", 0,0)
 		initEvents(); //events.js
 		initStars(); //stars.js
 		initMap(); //map.js
@@ -67,20 +71,21 @@
     	delta = clock.getDelta();
 
         requestAnimationFrame( draw );
-
-        stats.update();
+        
+        renderer.clear();
      
-        if(showStarNames)
+        if(camera.scale.x < 0.0430)
         {
-	       	renderer.clear( false, true, false );
 			renderer.render( sceneNames, camera ); 	
         }
 
-		renderer.clear( false, true, false );
 		renderer.render( sceneSectors, camera );
 
-		renderer.clear( false, true, false );
 		renderer.render( scene, camera );
+
+        renderer.render( sceneText, cameraText );
+
+        
 
     }
     </script>

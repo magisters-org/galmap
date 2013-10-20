@@ -11,9 +11,22 @@ function initStars()
 	var T_MAX = 2.0 * Math.PI * WINDINGS;		
 	var DRIFT = 0.3
 
-	for (var i = 0; i < 1800; i++) 
-	{
-		setStar(Math.sRandom(-1.7, 1.7), Math.sRandom(-1.7,1.7), GenShortName());
+	for (var v = 0; v < 4000; v++) {
+		
+
+		var vec = {x:Math.sRandom(0.8, 1.7),y:0};
+		var angle = Math.sRandom(0, Math.PI*2.5);
+		vec = VectorRot(vec, angle);
+		setStar(vec.x, vec.y, GenShortName());	
+
+			
+
+	}
+	for (var v = 0; v < 4000; v++) {
+		var vec = {x:Math.sRandom(0.001, 0.8),y:0};
+		var angle = Math.sRandom(0, Math.PI*2.5);
+		vec = VectorRot(vec, angle);
+		setStar(vec.x, vec.y, GenShortName());	
 	}
 	for (var i = 0; i < NUM_STARS; i++) 
 	{
@@ -27,7 +40,7 @@ function initStars()
 
 	  if (Math.random() > 0.5)
 	  {
-	    setStar(x, y, GenShortName());
+	    setStar(x , y, GenShortName());
 
 	  }
 		  else
@@ -58,14 +71,24 @@ function initStars()
 
 }
 
+//Поворачиваем вектора на угл
+function VectorRot(dir, angle){
+	var vecRes = {x:0,y:0};
+ 	vecRes.x = dir.x * Math.cos(angle) - dir.y * Math.sin(angle);
+    vecRes.y = dir.x * Math.sin(angle) + dir.y * Math.cos(angle);
+    return vecRes;
+}
+
 function setStar(x, y, name)
 {
 	var v = new THREE.Vector3();
     v.x = x * 10;
     v.y = y * 10;
     v.z = 10;
-
 	points.push({x:v.x,y:v.y,name:name});
+
+    //sceneNames.add(createLabel(name,v.x, v.y, 0, 30, "white"));
+	
 
 	particle_system_geometry.vertices.push(v);
 	

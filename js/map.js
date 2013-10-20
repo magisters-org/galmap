@@ -81,16 +81,16 @@ function initMap()
 			if(y == 4) py = (h / -2);
 
 
-			scene.add(createLabel("#"+x+"-"+y, px - 20, py + 13, 0, 26, "white"));
+			scene.add(createLabel("#"+x+"-"+y, px - 20, py + 13, 0, 91, "white"));
 
 			if(x == 4) continue;
 			if(y == 0) continue;
-			sceneSectors.add(createLabel("("+(0)+"-"+(0)+")", px + (w/8) - 70 , py + (h/8) + 13, 0, 26, "#555"));
-			sceneSectors.add(createLabel("("+(1)+"-"+(0)+")", px + (w/8)*2 - 70 , py + (h/8) + 13, 0, 26, "#555"));
-			sceneSectors.add(createLabel("("+(0)+"-"+(1)+")", px + (w/8) - 70 , h/-2 + 13, 0, 26, "#555"));
-			sceneSectors.add(createLabel("("+(1)+"-"+(1)+")", px + (w/8)*2 - 70 , h/-2 + 13, 0, 26, "#555"));
-			sceneSectors.add(createLabel("("+(0)+"-"+(1)+")", px + (w/8) - 70 , py + (h/8)*2 + 13, 0, 26, "#555"));
-			sceneSectors.add(createLabel("("+(1)+"-"+(1)+")", px + (w/8)*2 - 70 , py + (h/8)*2 + 13, 0, 26, "#555"));
+			sceneSectors.add(createLabel("("+(0)+"-"+(0)+")", px + (w/8) - 70 , py + (h/8) + 13, 0, 91, "#555"));
+			sceneSectors.add(createLabel("("+(1)+"-"+(0)+")", px + (w/8)*2 - 70 , py + (h/8) + 13, 0, 91, "#555"));
+			sceneSectors.add(createLabel("("+(0)+"-"+(1)+")", px + (w/8) - 70 , h/-2 + 13, 0, 91, "#555"));
+			sceneSectors.add(createLabel("("+(1)+"-"+(1)+")", px + (w/8)*2 - 70 , h/-2 + 13, 0, 91, "#555"));
+			sceneSectors.add(createLabel("("+(0)+"-"+(1)+")", px + (w/8) - 70 , py + (h/8)*2 + 13, 0, 91, "#555"));
+			sceneSectors.add(createLabel("("+(1)+"-"+(1)+")", px + (w/8)*2 - 70 , py + (h/8)*2 + 13, 0, 91, "#555"));
 
 		}			
 	}

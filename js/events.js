@@ -2,6 +2,7 @@ function initEvents()
 {
     var elem = $("canvas");
     elem.unbind();
+    var sxy = 1;
     //Прокрутка мыши
     var onWheel = function (e) {
         e = e || window.event;
@@ -10,25 +11,15 @@ function initEvents()
         	var delta = -e.deltaY;
         else
         	var delta =  e.wheelDelta;
-
-        if (delta < 0) {
-            camera.scale.x = camera.scale.y += 0.04;
-
-            //showStarNames = (camera.scale.x > 0.666 ? false : true);
-
-            if (camera.scale.y > 1.52) {
+        camera.scale.x = camera.scale.y -= delta*0.00008;
+        sxy -= delta*0.00008;
+        xyz.scale.x = xyz.scale.y = sxy;
+        if (camera.scale.y > 1.52) {
                 camera.scale.x = camera.scale.y = 1.52;
             }
-        }
-        else if (delta > 0) {
-            camera.scale.x = camera.scale.y -= 0.04;
-
-            //showStarNames = (camera.scale.x < 0.666 ? true : false)
-
-            if(camera.scale.x < 0.015) {
-                camera.scale.x = camera.scale.y = 0.015;
+        if(camera.scale.x < 0.0037) {
+                camera.scale.x = camera.scale.y = 0.0037;
             }
-        }
 
         e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     };
@@ -41,6 +32,7 @@ function initEvents()
     var mouseUp = function (e) {
         isMove = false; 
     };
+    var xyz = {};
     var mouseMove = function (e) {
 
         var projector = new THREE.Projector();
@@ -53,7 +45,8 @@ function initEvents()
 	    sceneNames = new THREE.Scene();
         var items = tree.nearest({x:pos.x,y:pos.y}, 1, 100);
         for (var i = 0; i < items.length; i++) {
-        	sceneNames.add(createLabel(items[i][0].name,vector.x, vector.y, 0, 30, "white"));
+            xyz = createLabel(items[i][0].name,vector.x, vector.y + 0.01, 0, 50, "white", 60)
+        	sceneNames.add(xyz);
         };
 
         if (!isMove) {
@@ -62,8 +55,14 @@ function initEvents()
 
         x = e.pageX;
         y = e.pageY;
-        camera.position.x -= (x - oldX) / 1;
-        camera.position.y += (y - oldY) / 1;
+        camera.position.x -= (x - oldX) / 4;
+        camera.position.y += (y - oldY) / 4;
+
+
+
+        cameraText.position.x -= (x - oldX) / 1;
+        cameraText.position.y += (y - oldY) / 1;
+
 
         oldX = x;
         oldY = y;
