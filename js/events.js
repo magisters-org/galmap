@@ -10,7 +10,7 @@ galaxymap.prototype.events = function()
     elem.bind("mousewheel", {camera:this.camera}, function (e) {
     	var delta =  e.originalEvent.wheelDelta;
 
-        e.data.camera.scale.x = e.data.camera.scale.y -= delta*0.00008;
+        e.data.camera.scale.x = e.data.camera.scale.y -= delta*(0.0008*e.data.camera.scale.x);
 
         if (e.data.camera.scale.y > 1.52) {
             e.data.camera.scale.x = e.data.camera.scale.y = 1.52;
@@ -33,7 +33,9 @@ galaxymap.prototype.events = function()
     });
 
     elem.bind("mousemove", {camera:this.camera}, function (e) {
-
+		
+	
+		
         if (!isMove) {
             return;
         }
@@ -41,11 +43,12 @@ galaxymap.prototype.events = function()
         x = e.pageX;
         y = e.pageY;
 
-        e.data.camera.position.x -= (x - oldX) / 4;
-        e.data.camera.position.y += (y - oldY) / 4;
+        e.data.camera.position.x -= (x - oldX) / (1/e.data.camera.scale.x);
+        e.data.camera.position.y += (y - oldY) / (1/e.data.camera.scale.x);
 
         oldX = x;
         oldY = y;
+        
 
     });
 
