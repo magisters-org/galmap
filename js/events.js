@@ -1,53 +1,38 @@
-function initEvents() 
+galaxymap.prototype.events = function() 
 {
+    var isMove = false; //Двигаем ли камеру
+    var oldX = 0; var oldY = 0;
+
     var elem = $("canvas");
     elem.unbind();
-    var sxy = 1;
-    //Прокрутка мыши
-    var onWheel = function (e) {
-        e = e || window.event;
 
-        if(e.deltaY !== undefined)
-        	var delta = -e.deltaY;
-        else
-        	var delta =  e.wheelDelta;
-        camera.scale.x = camera.scale.y -= delta*0.00008;
-        sxy -= delta*0.00008;
-        xyz.scale.x = xyz.scale.y = sxy;
-        if (camera.scale.y > 1.52) {
-                camera.scale.x = camera.scale.y = 1.52;
-            }
-        if(camera.scale.x < 0.0037) {
-                camera.scale.x = camera.scale.y = 0.0037;
-            }
+    //Прокрутка мыши
+    elem.bind("mousewheel", {camera:this.camera}, function (e) {
+    	var delta =  e.originalEvent.wheelDelta;
+
+        e.data.camera.scale.x = e.data.camera.scale.y -= delta*0.00008;
+
+        if (e.data.camera.scale.y > 1.52) {
+            e.data.camera.scale.x = e.data.camera.scale.y = 1.52;
+        }
+        if(e.data.camera.scale.y < 0.0037) {
+            e.data.camera.scale.x = e.data.camera.scale.y = 0.0037;
+        }
 
         e.preventDefault ? e.preventDefault() : (e.returnValue = false);
-    };
-    var mouseDown = function (e) {
+    });
+    elem.bind("mousedown", function (e) {
         isMove = true;
+
       	oldX = e.pageX;
         oldY = e.pageY;
-    };
+    });
 
-    var mouseUp = function (e) {
+    elem.bind("mouseup", function (e) {
         isMove = false; 
-    };
-    var xyz = {};
-    var mouseMove = function (e) {
+    });
 
-        var projector = new THREE.Projector();
-	    var vector = new THREE.Vector3(
-	    ( e.pageX / window.innerWidth ) * 2 - 1,
-	    - ( e.pageY / window.innerHeight ) * 2 + 1,
-	    0.5 );
-
-	    var pos = projector.unprojectVector( vector, camera );
-	    sceneNames = new THREE.Scene();
-        var items = tree.nearest({x:pos.x,y:pos.y}, 1, 100);
-        for (var i = 0; i < items.length; i++) {
-            xyz = createLabel(items[i][0].name,vector.x, vector.y + 0.01, 0, 50, "white", 60)
-        	sceneNames.add(xyz);
-        };
+    elem.bind("mousemove", {camera:this.camera}, function (e) {
 
         if (!isMove) {
             return;
@@ -55,29 +40,13 @@ function initEvents()
 
         x = e.pageX;
         y = e.pageY;
-        camera.position.x -= (x - oldX) / 4;
-        camera.position.y += (y - oldY) / 4;
 
-
-
-        cameraText.position.x -= (x - oldX) / 1;
-        cameraText.position.y += (y - oldY) / 1;
-
+        e.data.camera.position.x -= (x - oldX) / 4;
+        e.data.camera.position.y += (y - oldY) / 4;
 
         oldX = x;
         oldY = y;
 
-    };
-    if (elem[0].addEventListener) {
-        if ('onwheel' in document) {
-            elem[0].addEventListener("wheel", onWheel, false);
-        }
-        else if ('onmousewheel' in document) {
-            elem[0].addEventListener("mousewheel", onWheel, false);
-        }
+    });
 
-    }
-    elem.bind("mousedown", mouseDown);
-    elem.bind("mouseup", mouseUp);
-    elem.bind("mousemove", mouseMove);
 }
