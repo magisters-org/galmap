@@ -15,7 +15,6 @@ function galaxymap(renderer)
 
     this.draw = function() {
         renderer.render(this.sceneSectors, this.camera );
-
         renderer.render(this.scene, this.camera );
-    }
+   }
 }

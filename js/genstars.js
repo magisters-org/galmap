@@ -20,7 +20,7 @@ galaxymap.prototype.stars = function() {
 	//геометрия
     var geometry = new THREE.Geometry();
     //константы для построения логорифмической спирали
-	var countStars = 16000;
+	var countStars = 20000;
 	var a = 1.1;
 	var b = 0.17;
 	var windings = 3.7;
